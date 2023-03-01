@@ -1,16 +1,34 @@
 import express, { NextFunction, Request, Response } from "express";
 import { makeExecutableSchema } from "@graphql-tools/schema";
+import { GraphQLError } from "graphql";
 import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
 import { ApolloServer } from "apollo-server-express";
 import dotenv from "dotenv";
+import { userTypeDefs } from "./graphql/typeDefs/userTypeDefs";
+import { userResolvers } from "./graphql/resolvers/userResolver";
 dotenv.config();
 
-const startServer = async () => {
+/**
+ * 서버 생성
+ */
+const createServer = async () => {
   // graphql Schema, resolver 세팅
   const graphqlSchema = makeExecutableSchema({
-    typeDefs: [],
-    resolvers: [],
+    typeDefs: userTypeDefs,
+    resolvers: userResolvers,
   });
+
+  const graphqlErrorHandling = (err: GraphQLError) => {
+    // 데이터 베이스 에러일 경우 에러 내용을 감춘다
+    if (err.message.startsWith("Database Error: ")) {
+      return new GraphQLError("Internal server error", {
+        extensions: {
+          code: "INTERNAL_SERVER_ERROR",
+        },
+      });
+    }
+    return err;
+  };
 
   // apollo server 설정
   const apolloServer = new ApolloServer({
@@ -18,6 +36,7 @@ const startServer = async () => {
     // Playground 설정
     plugins: [ApolloServerPluginLandingPageGraphQLPlayground()],
     introspection: true,
+    formatError: graphqlErrorHandling,
   });
 
   const app = express();
@@ -30,16 +49,7 @@ const startServer = async () => {
   app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).json("ERR_NOT_FOUND");
   });
-
-  // port 설정
-  const options = {
-    port: Number(process.env.PORT) || 3000,
-  };
-  // 서버 시작
-  app.listen(options.port, () => {
-    console.log(`Server on! Port : ${options.port}`);
-  });
+  return app;
 };
 
-// 서버 실행
-startServer();
+export { createServer };
