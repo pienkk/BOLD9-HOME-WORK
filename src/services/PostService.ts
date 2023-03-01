@@ -8,11 +8,16 @@ export class PostService {
    */
   public async createPost(createPostDto: CreatePostDto) {
     // 유저 가입 여부 확인
-    const user = await prisma.user.findUnique({
-      where: { email: createPostDto.email },
+    const user = await prisma.user.findFirst({
+      where: {
+        AND: [
+          { email: createPostDto.email },
+          { password: createPostDto.password },
+        ],
+      },
     });
-    // 없는 유저이거나, 비밀번호가 일치하지 않을 경우
-    if (!user || user.password !== createPostDto.password) {
+    // 정보가 일치하는 유저가 없는 경우
+    if (!user) {
       throw new GraphQLError("정보가 일치하는 유저가 없습니다.", {
         extensions: {
           code: "BAD_USER_INPUT",

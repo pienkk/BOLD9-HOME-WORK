@@ -8,7 +8,9 @@ import { userTypeDefs } from "./graphql/typeDefs/userTypeDefs";
 import { userResolvers } from "./graphql/resolvers/userResolver";
 import { postTypeDefs } from "./graphql/typeDefs/postTypeDefs";
 import { postResolver } from "./graphql/resolvers/postResolver";
-dotenv.config();
+import { commentTypeDefs } from "./graphql/typeDefs/commentTypeDefs";
+import { commentResolver } from "./graphql/resolvers/commentResolver";
+dotenv.config({ path: process.env.NODE_ENV === "test" ? ".env.test" : ".env" });
 
 /**
  * 서버 생성
@@ -16,11 +18,12 @@ dotenv.config();
 const createServer = async () => {
   // graphql Schema, resolver 세팅
   const graphqlSchema = makeExecutableSchema({
-    typeDefs: [userTypeDefs, postTypeDefs],
-    resolvers: [userResolvers, postResolver],
+    typeDefs: [userTypeDefs, postTypeDefs, commentTypeDefs],
+    resolvers: [userResolvers, postResolver, commentResolver],
   });
 
   const graphqlErrorHandling = (err: GraphQLError) => {
+    console.error(err);
     // 데이터 베이스 에러일 경우 에러 내용을 감춘다
     if (err.message.startsWith("Database Error: ")) {
       return new GraphQLError("Internal server error", {
@@ -45,7 +48,11 @@ const createServer = async () => {
 
   // apollo server 시작
   await apolloServer.start();
-  apolloServer.applyMiddleware({ app, path: "/graphql", cors: { origin: "*" } });
+  apolloServer.applyMiddleware({
+    app,
+    path: "/graphql",
+    cors: { origin: "*" },
+  });
 
   // 잘못된 엔드포인트 에러 핸들링
   app.use((req: Request, res: Response, next: NextFunction) => {

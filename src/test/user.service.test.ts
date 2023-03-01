@@ -29,8 +29,8 @@ describe("UserService 유저 비즈니스 로직", () => {
     // 성공
     it("유저 가입 성공 시 유저 정보를 반환한다.", async () => {
       // prisma Mock
-      const prismaUserFindUniqueSpy = jest
-        .spyOn(prisma.user, "findUnique")
+      const prismaUserFindFirstSpy = jest
+        .spyOn(prisma.user, "findFirst")
         .mockResolvedValue(null);
       const prismaUserCreateSpy = jest
         .spyOn(prisma.user, "create")
@@ -38,7 +38,7 @@ describe("UserService 유저 비즈니스 로직", () => {
 
       const result = await userService.createUser(createUserDto);
 
-      expect(prismaUserFindUniqueSpy).toHaveBeenCalledWith({
+      expect(prismaUserFindFirstSpy).toHaveBeenCalledWith({
         where: { email: "kisuk623@gmail.com" },
       });
       expect(prismaUserCreateSpy).toBeCalledTimes(1);
@@ -54,8 +54,8 @@ describe("UserService 유저 비즈니스 로직", () => {
     // 실패
     it("이미 가입된 유저일 시 이미 가입된 유저라는 예외를 던진다.", async () => {
       // prisma Mock
-      const prismaFindUniqueMock = jest
-        .spyOn(prisma.user, "findUnique")
+      const prismaFindFirstSpy = jest
+        .spyOn(prisma.user, "findFirst")
         .mockResolvedValue(existingUser);
 
       const result = async () => {

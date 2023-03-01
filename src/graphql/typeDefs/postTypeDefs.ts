@@ -28,7 +28,11 @@ export const postTypeDefs = gql`
     """
     작성 일자
     """
-    createdAt: Date
+    createdAt: Date!
+    """
+    댓글 리스트
+    """
+    comments: [Comment]
   }
 
   """
