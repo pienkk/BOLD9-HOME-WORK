@@ -37,6 +37,10 @@ export const userTypeDefs = gql`
     가입 일자
     """
     createdAt: Date!
+    """
+    작성한 게시글 리스트
+    """
+    posts: [Post]
   }
 
   """
