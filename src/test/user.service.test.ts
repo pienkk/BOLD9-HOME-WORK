@@ -29,8 +29,12 @@ describe("UserService 유저 비즈니스 로직", () => {
     // 성공
     it("유저 가입 성공 시 유저 정보를 반환한다.", async () => {
       // prisma Mock
-      const prismaUserFindUniqueSpy = jest.spyOn(prisma.user, "findUnique").mockResolvedValue(null);
-      const prismaUserCreateSpy = jest.spyOn(prisma.user, "create").mockResolvedValue(existingUser);
+      const prismaUserFindUniqueSpy = jest
+        .spyOn(prisma.user, "findUnique")
+        .mockResolvedValue(null);
+      const prismaUserCreateSpy = jest
+        .spyOn(prisma.user, "create")
+        .mockResolvedValue(existingUser);
 
       const result = await userService.createUser(createUserDto);
 
