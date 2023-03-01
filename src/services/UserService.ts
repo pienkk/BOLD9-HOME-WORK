@@ -8,7 +8,9 @@ export class UserService {
    **/
   public async createUser(createUserDto: CreateUserDto) {
     // 유저 가입 여부 확인
-    const user = await prisma.user.findUnique({ where: { email: createUserDto.email } });
+    const user = await prisma.user.findUnique({
+      where: { email: createUserDto.email },
+    });
     // 이미 가입한 유저인 경우
     if (user) {
       throw new GraphQLError("이미 가입된 유저입니다.", {

@@ -1,6 +1,26 @@
-import { IsEmail, IsNotEmpty, IsString, Matches, MaxLength, Min, MinLength } from "class-validator";
+import {
+  IsBoolean,
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  Matches,
+  MaxLength,
+  MinLength,
+} from "class-validator";
 
-export class CreateUserDto {
+export class CreatePostDto {
+  @IsString()
+  @IsNotEmpty()
+  title!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  content!: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  published!: boolean;
+
   @IsEmail()
   @IsNotEmpty()
   email!: string;
@@ -13,8 +33,4 @@ export class CreateUserDto {
     message: "Invalid password",
   })
   password!: string;
-
-  @IsString()
-  @IsNotEmpty()
-  name!: string;
 }

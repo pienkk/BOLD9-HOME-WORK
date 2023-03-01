@@ -6,6 +6,8 @@ import { ApolloServer } from "apollo-server-express";
 import dotenv from "dotenv";
 import { userTypeDefs } from "./graphql/typeDefs/userTypeDefs";
 import { userResolvers } from "./graphql/resolvers/userResolver";
+import { postTypeDefs } from "./graphql/typeDefs/postTypeDefs";
+import { postResolver } from "./graphql/resolvers/postResolver";
 dotenv.config();
 
 /**
@@ -14,8 +16,8 @@ dotenv.config();
 const createServer = async () => {
   // graphql Schema, resolver 세팅
   const graphqlSchema = makeExecutableSchema({
-    typeDefs: userTypeDefs,
-    resolvers: userResolvers,
+    typeDefs: [userTypeDefs, postTypeDefs],
+    resolvers: [userResolvers, postResolver],
   });
 
   const graphqlErrorHandling = (err: GraphQLError) => {

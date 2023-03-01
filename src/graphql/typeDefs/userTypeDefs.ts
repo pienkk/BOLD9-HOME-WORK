@@ -49,6 +49,9 @@ export const userTypeDefs = gql`
   }
 
   type Mutation {
-    createUser(input: UserCreateInput!): User
+    """
+    유저 생성
+    """
+    createUser(input: UserCreateInput!): User!
   }
 `;
