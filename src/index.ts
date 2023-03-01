@@ -26,14 +26,15 @@ const startServer = async () => {
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, path: "/graphql", cors: { origin: "*" } });
 
+  // 잘못된 엔드포인트 에러 핸들링
   app.use((req: Request, res: Response, next: NextFunction) => {
     res.status(404).json("ERR_NOT_FOUND");
   });
+
   // port 설정
   const options = {
     port: Number(process.env.PORT) || 3000,
   };
-
   // 서버 시작
   app.listen(options.port, () => {
     console.log(`Server on! Port : ${options.port}`);
