@@ -1,12 +1,15 @@
 import { CreateCommentDto } from "../dtos/createCommentDto";
 import prisma from "../../prisma/context";
 import { GraphQLError } from "graphql";
+import { Comment } from "@prisma/client";
 
 export class CommentService {
   /**
    * 댓글 생성
    */
-  public async createComment(createCommentDto: CreateCommentDto) {
+  public async createComment(
+    createCommentDto: CreateCommentDto
+  ): Promise<Comment> {
     // 게시글 존재 여부 확인
     const post = await prisma.post.findFirst({
       where: { id: createCommentDto.postId },

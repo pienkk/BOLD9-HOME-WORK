@@ -32,7 +32,7 @@ export const postTypeDefs = gql`
     """
     댓글 리스트
     """
-    comments: [Comment]
+    comments: [Comment]!
   }
 
   """
@@ -44,6 +44,13 @@ export const postTypeDefs = gql`
     published: Boolean!
     email: String!
     password: String!
+  }
+
+  type Query {
+    """
+    유저가 생성한 게시글 조회
+    """
+    getPostsByUser(name: String!): [Post]!
   }
 
   type Mutation {

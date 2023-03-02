@@ -2,7 +2,6 @@ import { createServer } from "../index";
 import request from "supertest";
 import prisma from "../../prisma/context";
 import { Express } from "express-serve-static-core";
-import { Post } from "@prisma/client";
 
 let app: Express;
 
@@ -68,6 +67,36 @@ describe("postResolver", () => {
       .expect((res) => {
         expect(res.body.data.createPost.title).toBe("나의 게시글");
         expect(res.body.data.createPost.content).toBe("내꺼");
+      });
+  });
+
+  // 성공
+  it("getPostsByUser() 유저 이름을 받아 해당 유저가 작성한 게시글리스트와 게시글에 해당하는 댓글 리스트를 반환한다.", () => {
+    return request(app)
+      .post("/graphql")
+      .send({
+        query: `query{
+        getPostsByUser(name:"gisuk"){
+          title
+          content
+          comments{
+            content
+          }
+        }
+      }`,
+      })
+      .expect(200)
+      .expect((res) => {
+        expect(res.body.data.getPostsByUser).toEqual([
+          {
+            content: "graphql은 좋다",
+            title: "graphql과 prisma의 장점",
+            comments: [
+              { content: "유익한 포스팅이네요" },
+              { content: "큰 도움이 되었습니다" },
+            ],
+          },
+        ]);
       });
   });
 });
