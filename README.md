@@ -35,14 +35,14 @@ $git clone https://github.com/pienkk/BOLD9-HOME-WORK
 $npm install
 ```
 
-3. 프리즈마 DB migrate, Seed up
+3. 프리즈마 DB migrate, 시드 
 
 ```bash
 $prisma migrate dev
 ```
 
 ```bash
-$prisma seed up
+$prisma db seed
 ```
 
 4. 서버 실행 pm2가 없을 경우 pm2 추가 설치
