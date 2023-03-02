@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "pm2-runtime start dist/src/server.js --name 'bold9-homework' --watch",
     "dev": "nodemon src/server.ts",
+    "build": "tsc",
     "test:unit": "NODE_ENV=test jest --config jest-unit.config.js",
     "test:e2e": "NODE_ENV=test prisma db seed && jest --config jest-e2e.config.js"
   },
