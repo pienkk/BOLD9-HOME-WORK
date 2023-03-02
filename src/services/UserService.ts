@@ -1,12 +1,13 @@
 import { CreateUserDto } from "../dtos/createUserDto";
 import prisma from "../../prisma/context";
 import { GraphQLError } from "graphql";
+import { User } from "@prisma/client";
 
 export class UserService {
   /**
    * 유저 생성
    **/
-  public async createUser(createUserDto: CreateUserDto) {
+  public async createUser(createUserDto: CreateUserDto): Promise<User> {
     // 유저 가입 여부 확인
     const user = await prisma.user.findFirst({
       where: { email: createUserDto.email },

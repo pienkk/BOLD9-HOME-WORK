@@ -8,6 +8,9 @@ import {
   MinLength,
 } from "class-validator";
 
+/**
+ * 게시글 생성에 필요한 입력 값
+ */
 export class CreatePostDto {
   @IsString()
   @IsNotEmpty()

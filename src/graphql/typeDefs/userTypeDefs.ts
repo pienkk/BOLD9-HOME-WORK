@@ -7,13 +7,6 @@ export const userTypeDefs = gql`
   scalar Date
 
   """
-  health Check
-  """
-  type Query {
-    ping: String!
-  }
-
-  """
   유저
   """
   type User {

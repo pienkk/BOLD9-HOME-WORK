@@ -8,6 +8,9 @@ import {
   MinLength,
 } from "class-validator";
 
+/**
+ * 유저 생성에 필요한 입력 값
+ */
 export class CreateUserDto {
   @IsEmail()
   @IsNotEmpty()
