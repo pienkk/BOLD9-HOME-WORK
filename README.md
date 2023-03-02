@@ -72,3 +72,5 @@ $ docker run -p 3000:3000 -d <your-name>/bold9
 ### 테스트
 
 유닛테스트, E2E 테스트 완료
+
+<img width="839" alt="image" src="https://user-images.githubusercontent.com/104005339/222422533-7e7622f2-5ed1-4023-932a-282b83a5412b.png">
